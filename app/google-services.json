@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "933808507155",
+    "firebase_url": "https://laporin-cb7d4-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "laporin-cb7d4",
     "storage_bucket": "laporin-cb7d4.firebasestorage.app"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.laporin"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "933808507155-4ck53a8skc65arcsehatvr3gi5s8ebkf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.laporin",
+            "certificate_hash": "5dc9539fd0eca06136f7bfc2384f27e8f7dc28fb"
+          }
+        },
+        {
+          "client_id": "933808507155-q8t87e6ki2hhl8ue8l7akap8vepg4atu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA1JjdEPZ8k72esv7IA5X-uPbqz_VVa4F4"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "933808507155-q8t87e6ki2hhl8ue8l7akap8vepg4atu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

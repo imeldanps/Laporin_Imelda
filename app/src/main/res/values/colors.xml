@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="soft_orange">#FFB74D</color> <!-- Warna utama -->
+    <color name="soft_orange_dark">#F57C00</color>
+    <color name="soft_orange_light">#FFE0B2</color>
+    <color name="soft_gray">#F5F5F5</color>
+    <color name="text_dark">#212121</color>
+    <color name="text_light">#757575</color>
 </resources>

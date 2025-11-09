@@ -30,7 +30,7 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(intent)
             },
             onDelete = { report ->
-                reportUseCase.deleteReport(report, {
+                reportUseCase.deleteReport(report.id, {
                     Toast.makeText(this, "Laporan dihapus", Toast.LENGTH_SHORT).show()
                     loadReports()
                 }, {

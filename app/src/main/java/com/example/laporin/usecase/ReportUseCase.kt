@@ -1,11 +1,12 @@
 package com.example.laporin.usecase
 
+import android.net.Uri
 import com.example.laporin.entity.Report
+import com.example.laporin.utils.CloudinaryManager
 import com.google.firebase.database.FirebaseDatabase
 
 class ReportUseCase {
 
-    // Realtime Database reference
     private val db = FirebaseDatabase.getInstance().getReference("reports")
 
     // ➕ Tambah laporan baru
@@ -39,35 +40,76 @@ class ReportUseCase {
             .addOnFailureListener { onFailure(it) }
     }
 
-    // ✏️ Update laporan
+    // ✏️ Update laporan tanpa ubah gambar
     fun updateReport(
         report: Report,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        if (report.id.isEmpty()) {
+        if (report.id.isNullOrEmpty()) {
             onFailure(Exception("ID laporan tidak ditemukan"))
             return
         }
 
-        db.child(report.id).setValue(report)
+        db.child(report.id!!).setValue(report)
             .addOnSuccessListener { onSuccess() }
             .addOnFailureListener { onFailure(it) }
     }
 
-    // 🗑️ Hapus laporan
-    fun deleteReport(
-        id: String,
+    // ✏️ Update laporan dengan gambar baru
+    fun updateReportWithImage(
+        report: Report,
+        imageUri: Uri,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        if (id.isEmpty()) {
-            onFailure(Exception("ID laporan kosong"))
+        if (report.id.isNullOrEmpty()) {
+            onFailure(Exception("ID laporan tidak ditemukan"))
             return
         }
 
-        db.child(id).removeValue()
-            .addOnSuccessListener { onSuccess() }
+        val oldImageUrl = report.imageUrl
+
+        // Upload gambar baru ke Cloudinary
+        CloudinaryManager.uploadImage(
+            imageUri,
+            onSuccess = { newImageUrl ->
+                // Hapus gambar lama kalau ada
+                if (!oldImageUrl.isNullOrEmpty()) {
+                    CloudinaryManager.deleteImage(oldImageUrl) { }
+                }
+
+                // Simpan URL baru ke Firebase
+                report.imageUrl = newImageUrl
+                db.child(report.id!!).setValue(report)
+                    .addOnSuccessListener { onSuccess() }
+                    .addOnFailureListener { onFailure(it) }
+            },
+            onFailure = { e ->
+                onFailure(Exception("Gagal upload gambar baru: ${e.message}"))
+            }
+        )
+    }
+
+    // 🗑️ Hapus laporan (Firebase + Cloudinary)
+    fun deleteReport(
+        report: Report,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        if (report.id.isNullOrEmpty()) {
+            onFailure(Exception("ID laporan tidak ditemukan"))
+            return
+        }
+
+        db.child(report.id!!).removeValue()
+            .addOnSuccessListener {
+                if (!report.imageUrl.isNullOrEmpty()) {
+                    CloudinaryManager.deleteImage(report.imageUrl!!) { onSuccess() }
+                } else {
+                    onSuccess()
+                }
+            }
             .addOnFailureListener { onFailure(it) }
     }
 }

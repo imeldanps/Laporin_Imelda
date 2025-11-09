@@ -10,5 +10,6 @@ data class Report(
     var description: String = "",
     var location: String = "",
     var imageUrl: String = "",
-    var status: String = "Menunggu"
+    var status: String = "Menunggu",
+    var timestamp: Long = System.currentTimeMillis()
 ) : Parcelable
